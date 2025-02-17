@@ -35,7 +35,7 @@ export default function LoginForm() {
         if (login) {
             try {
                 await login(email, password);
-                if(user?.user.role === "CI") router.replace("/(tabs)/HomeScreen");
+                if(user?.user.role === "CI") router.replace("/(tabs)/HomeScreenCi");
                 else if(user?.user.role === "MI") router.replace("/(tabs)/HomeScreenMI");
                 
             } catch (error) {

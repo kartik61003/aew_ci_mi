@@ -18,7 +18,7 @@ export default function Index() {
         if (isMounted) {
             if (user) {
                 if (user.user.role === "CI") {
-                    router.replace("/(tabs)/CreateCiRequest");
+                    router.replace("/(tabs)/HomeScreenCi");
                 }
                 else if (user.user.role === "MI") {
                     router.replace("/(tabs)/HomeScreenMI");
