@@ -10,7 +10,6 @@ export default function HomeScreenMI() {
     const auth = useAuth();
     const user = auth?.user;
     const navigation = useNavigation();
-    const logout = auth?.logout;
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     const [requests, setRequests] = useState<{ 
@@ -45,24 +44,11 @@ export default function HomeScreenMI() {
         fetchRequests();
     }, []);
 
-    const handleLogout = async () => {
-        if (logout) {
-            try {
-                console.log('Logging out...');
-                await logout();
-                console.log('Logout successful, redirecting to LoginForm');
-                router.replace("/(auth)/LoginForm");
-            } catch (error) {
-                console.error('Logout failed:', error);
-            }
-        }
-    };
 
     return (
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <Text style={styles.welcomeText}>Welcome to Home, {user?.user.username}!</Text>
-                <Button title="Logout" onPress={handleLogout} color="#ff6347" />
 
                 <Text style={styles.sectionTitle}>CI Requests</Text>
                 {requests.map((request) => (

@@ -18,10 +18,10 @@ export default function Index() {
         if (isMounted) {
             if (user) {
                 if (user.user.role === "CI") {
-                    router.replace("/(tabs)/HomeScreenCi");
+                    router.replace("/(tabCI)/HomeScreenCi");
                 }
                 else if (user.user.role === "MI") {
-                    router.replace("/(tabs)/HomeScreenMI");
+                    router.replace("/(tabMI)/HomeScreenMI");
                 }
             } else {
                 router.replace("/(auth)/LoginForm");

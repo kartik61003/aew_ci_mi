@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Animated, Alert, ScrollView } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { router } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 import { createCi } from "@/service/ci";
 
@@ -9,9 +8,8 @@ import { createCi } from "@/service/ci";
 
 export default function CreateCiRequest() {
     const auth = useAuth();
-    const user = auth?.user;
+    const user = auth?.user; 
     const navigation = useNavigation();
-    const logout = auth?.logout;
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     const [customerName, setCustomerName] = useState<string>('');
@@ -36,18 +34,6 @@ export default function CreateCiRequest() {
         }).start();
     }, [fadeAnim]);
 
-    const handleLogout = async () => {
-        if (logout) {
-            try {
-                console.log('Logging out...');
-                await logout();
-                console.log('Logout successful, redirecting to LoginForm');
-                router.replace("/(auth)/LoginForm");
-            } catch (error) {
-                console.error('Logout failed:', error);
-            }
-        }
-    };
 
     const handleSubmit = async () => {
         if (!customerName || !customerAddress || !customerPhone || !customerEmail || !oldMeterId || !oldMeterType || !oldMeterKwh || !oldMeterKvah || !oldMeterStatus) {
@@ -210,7 +196,6 @@ export default function CreateCiRequest() {
                     />
                 </View>
                 <Button title="Submit" onPress={handleSubmit} />
-                <Button title="Logout" onPress={handleLogout} />
             </ScrollView>
         </Animated.View>
     );
