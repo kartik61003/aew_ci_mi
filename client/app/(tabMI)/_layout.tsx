@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Stack, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from "../../hooks/useAuth";
 
@@ -21,7 +21,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
                 <Tabs>
-                    <Tabs.Screen name = "HomeScreenMI" options= {{title: 'MI Tab' }}/>
+                    <Tabs.Screen name = "HomeScreenMi" options= {{title: 'MI Tab' }}/>
                     <Tabs.Screen name="details" options={{ title: 'Details' }} />
                 </Tabs>
             </SafeAreaView>
