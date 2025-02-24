@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { TextInput, Button, Text, StyleSheet, Alert, Animated } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { Link, router } from "expo-router";
-import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const auth = useAuth();
     const fadeAnim = useState(new Animated.Value(0))[0];
-    const user = auth?.user;
 
+    const auth = useAuth();
     const login = auth?.login;
+    const user = auth?.user; // Get user from auth context
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -21,25 +20,37 @@ export default function LoginForm() {
         }).start();
     }, [fadeAnim]);
 
+    useEffect(() => {
+        if (user?.user?.role) {
+            if (user.user.role === "CI") {
+                router.replace("/(tabCI)/HomeScreenCi");
+            } else if (user.user.role === "MI") {
+                router.replace("/(tabMI)/HomeScreenMI");
+            } else {
+                Alert.alert("Login Error", "Invalid role detected");
+            }
+        }
+    }, [user]); // Re-run when user changes
+
     const handleLogin = async () => {
         if (!email || !password) {
-            Alert.alert('Validation Error', 'Email and password are required');
+            Alert.alert("Validation Error", "Email and password are required");
             return;
         }
 
-        if (login) {
-            try {
-                await login(email, password);
-                if(user?.user.role === "CI") router.replace("/(tabCI)/HomeScreenCi");
-                else if(user?.user.role === "MI") router.replace("/(tabMI)/HomeScreenMI");
-                
-            } catch (error) {
-                if (error instanceof Error) {
-                    Alert.alert('Login failed', error.message);
-                } else {
-                    Alert.alert('Login failed', 'An unknown error occurred');
-                }
+        if (!login) {
+            Alert.alert("Login Error", "Login function is not available");
+            return;
+        }
+
+        try {
+            await login(email, password);
+        } catch (error) {
+            let errorMessage = "An unknown error occurred";
+            if (error instanceof Error) {
+                errorMessage = error.message;
             }
+            Alert.alert("Login failed", errorMessage);
         }
     };
 
@@ -71,35 +82,28 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: "center",
         padding: 16,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: "#f5f5f5",
     },
     title: {
         fontSize: 24,
         marginBottom: 16,
-        textAlign: 'center',
-        color: '#333',
-        fontFamily: 'Arial',
+        textAlign: "center",
+        color: "#333",
+        fontFamily: "Arial",
     },
     input: {
         height: 40,
         marginBottom: 16,
         paddingHorizontal: 8,
         borderRadius: 8,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
+        backgroundColor: "#fff",
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 8,
         elevation: 2,
-        fontFamily: 'Arial',
-    },
-    link: {
-        textAlign: 'center',
-        marginTop: 16,
-        color: 'blue',
-        fontFamily: 'Arial',
+        fontFamily: "Arial",
     },
 });
-
