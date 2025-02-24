@@ -8,15 +8,10 @@ export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const auth = useAuth();
-    const navigation = useNavigation();
     const fadeAnim = useState(new Animated.Value(0))[0];
     const user = auth?.user;
 
     const login = auth?.login;
-
-    useEffect(() => {
-        navigation.setOptions({ title: "AEW Login Form" });
-    }, [navigation]);
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -69,7 +64,6 @@ export default function LoginForm() {
                 placeholderTextColor="#888"
             />
             <Button title="Login" onPress={handleLogin} />
-            <Link href="/(auth)/RegisterForm" style={styles.link}>Register</Link>
         </Animated.View>
     );
 }

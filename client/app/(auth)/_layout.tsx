@@ -1,26 +1,12 @@
-import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Tabs } from 'expo-router';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from "../../hooks/useAuth";
 
 export default function RootLayout() {
-    const auth = useAuth();
-    const role = auth?.user?.user?.role;
-
-    // Show a loading indicator while role is being determined
-    if (!role) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
-    }
-
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
-            <Tabs
+                <Tabs
                     screenOptions={{
                         headerStyle: {
                             backgroundColor: '#f4511e', // Set header background color
@@ -31,8 +17,20 @@ export default function RootLayout() {
                         },
                     }}
                 >
-                    <Tabs.Screen name = "HomeScreenMI" options= {{title: 'MI Tab' }}/>
-                    <Tabs.Screen name="details" options={{ title: 'Details' }} />
+                    <Tabs.Screen
+                        name="LoginForm"
+                        options={{
+                            title: 'AEW Login Form', // Set the title for the LoginForm screen
+                            headerShown: true, // Show the header for this screen
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="RegisterForm"
+                        options={{
+                            title: 'AEW Register Form', // Set the title for the RegisterForm screen
+                            headerShown: true, // Show the header for this screen
+                        }}
+                    />
                 </Tabs>
             </SafeAreaView>
         </SafeAreaProvider>
@@ -41,11 +39,6 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flex: 1, // Ensure the SafeAreaView takes up the full screen
     },
 });

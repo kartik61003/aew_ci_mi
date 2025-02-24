@@ -20,9 +20,20 @@ export default function RootLayout() {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
-                <Tabs>
-                    <Tabs.Screen name = "HomeScreenCi" options= {{title: 'Ci Form' }}/>
-                    <Tabs.Screen name="details" options={{ title: 'Details' }} />
+            <Tabs
+                    screenOptions={{
+                        headerStyle: {
+                            backgroundColor: '#f4511e', // Set header background color
+                        },
+                        headerTintColor: '#fff', // Set header text color
+                        headerTitleStyle: {
+                            fontWeight: 'bold', // Set header title style
+                        },
+                    }}
+                >
+                    <Tabs.Screen name="HomeScreenCi" options={{ title: 'Ci Form', headerShown: true }} />
+                    <Tabs.Screen name="CIRequests" options={{ title: 'AllCiRequest', headerShown: true }} />
+                    <Tabs.Screen name="details" options={{ title: 'Details', headerShown: true }} />
                 </Tabs>
             </SafeAreaView>
         </SafeAreaProvider>
