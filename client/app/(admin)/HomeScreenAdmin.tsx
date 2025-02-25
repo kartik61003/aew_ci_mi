@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Animated, Alert } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { registerUser } from '../../service/register';
-import { useNavigation } from "@react-navigation/native";
+
 
 interface Option {
     value: 'CI' | 'MI';
@@ -22,7 +22,7 @@ const RegisterForm: React.FC = () => {
     const [phone, setPhone] = useState<string>('');
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
-    const navigation = useNavigation();
+
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -31,10 +31,6 @@ const RegisterForm: React.FC = () => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
-
-    useEffect(() => {
-        navigation.setOptions({ title: "Add new Employee" }); // Set the screen title
-    }, [navigation]);
 
     const handleSubmit = async () => {
         if (!username || !email || !password || !role || !phone) {

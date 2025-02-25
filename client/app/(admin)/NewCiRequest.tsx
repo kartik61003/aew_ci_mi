@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Animated, Alert, ScrollView } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
 import { createCi } from "@/service/ci";
 
 
@@ -9,7 +8,6 @@ import { createCi } from "@/service/ci";
 export default function CreateCiRequest() {
     const auth = useAuth();
     const user = auth?.user; 
-    const navigation = useNavigation();
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     const [customerName, setCustomerName] = useState<string>('');
@@ -21,10 +19,6 @@ export default function CreateCiRequest() {
     const [oldMeterKwh, setOldMeterKwh] = useState<string>('');
     const [oldMeterKvah, setOldMeterKvah] = useState<string>('');
     const [oldMeterStatus, setOldMeterStatus] = useState<string>('');
-
-    useEffect(() => {
-        navigation.setOptions({ title: "FILL CI FORM" });
-    }, [navigation]);
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
