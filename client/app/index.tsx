@@ -23,6 +23,9 @@ export default function Index() {
                 else if (user.user.role === "MI") {
                     router.replace("/(tabMI)/HomeScreenMI");
                 }
+                else if (user.user.role === "Admin") {
+                    router.replace("/(admin)/NewCiRequest");
+                }
             } else {
                 router.replace("/(auth)/LoginForm");
             }

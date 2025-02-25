@@ -32,7 +32,7 @@ export default function RootLayout() {
                     }}
                 >
                     <Tabs.Screen name = "HomeScreenMI" options= {{title: 'MI Tab' }}/>
-                    <Tabs.Screen name="details" options={{ title: 'Details' }} />
+                    <Tabs.Screen name="Details" options={{ title: 'Details' }} />
                 </Tabs>
             </SafeAreaView>
         </SafeAreaProvider>

@@ -10,7 +10,7 @@ interface SignupRequest extends Request {
     email: string;
     phone: string;
     password: string;
-    role: 'CI' | 'MI';
+    role: 'CI' | 'MI' | 'Admin';
   };
 }
 

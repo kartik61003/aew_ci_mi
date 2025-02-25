@@ -31,7 +31,8 @@ export default function RootLayout() {
                         },
                     }}
                 >
-                    <Tabs.Screen name="HomeScreenCi" options={{ title: 'All Ci Requests', headerShown: true }} />
+                    <Tabs.Screen name="NewCiRequest" options={{ title: 'Fill new CI Form', headerShown:true}}/>
+                    <Tabs.Screen name="HomeScreenAdmin" options={{ title: 'Register a Candidate', headerShown: true }} />
                     <Tabs.Screen name="Details" options={{ title: 'Details', headerShown: true }} />
                 </Tabs>
             </SafeAreaView>

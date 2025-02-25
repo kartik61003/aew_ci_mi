@@ -26,7 +26,11 @@ export default function LoginForm() {
                 router.replace("/(tabCI)/HomeScreenCi");
             } else if (user.user.role === "MI") {
                 router.replace("/(tabMI)/HomeScreenMI");
-            } else {
+            }
+            else if(user.user.role === "Admin"){
+                router.replace("/(admin)/NewCiRequest");
+            } 
+            else {
                 Alert.alert("Login Error", "Invalid role detected");
             }
         }

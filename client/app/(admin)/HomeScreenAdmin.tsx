@@ -33,7 +33,7 @@ const RegisterForm: React.FC = () => {
     }, [fadeAnim]);
 
     useEffect(() => {
-        navigation.setOptions({ title: "Register Form" }); // Set the screen title
+        navigation.setOptions({ title: "Add new Employee" }); // Set the screen title
     }, [navigation]);
 
     const handleSubmit = async () => {
@@ -55,7 +55,7 @@ const RegisterForm: React.FC = () => {
         try {
             const data = { username, email, phone, password, role };
             await registerUser(data);
-            Alert.alert('Success', 'User registered successfully');
+            Alert.alert('Success', 'User Created successfully');
         } catch (error) {
             if (error instanceof Error) {
                 Alert.alert('Error', error.message);
@@ -78,7 +78,7 @@ const RegisterForm: React.FC = () => {
                     style={styles.input}
                     value={username}
                     onChangeText={setUsername}
-                    placeholder="Enter your Name"
+                    placeholder="Enter Candidate Name"
                     placeholderTextColor="#888"
                 />
             </View>
@@ -88,7 +88,7 @@ const RegisterForm: React.FC = () => {
                     style={styles.input}
                     value={email}
                     onChangeText={setEmail}
-                    placeholder="Enter your email"
+                    placeholder="Enter Candidate email"
                     keyboardType="email-address"
                     placeholderTextColor="#888"
                 />
@@ -99,7 +99,7 @@ const RegisterForm: React.FC = () => {
                     style={styles.input}
                     value={phone}
                     onChangeText={setPhone}
-                    placeholder="Enter your Phone Number"
+                    placeholder="Enter Candidate Phone Number"
                     keyboardType="phone-pad"
                     placeholderTextColor="#888"
                 />
@@ -111,7 +111,7 @@ const RegisterForm: React.FC = () => {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
-                    placeholder="Enter your password"
+                    placeholder="Create Candidate password"
                     placeholderTextColor="#888"
                 />
             </View>

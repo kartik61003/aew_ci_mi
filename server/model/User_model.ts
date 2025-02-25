@@ -5,7 +5,7 @@ interface IUser extends Document{
     email: string ;
     password: string ;
     phone: string ;
-    role: 'CI' | 'MI';
+    role: 'CI' | 'MI' | 'Admin';
 }
 
 
@@ -14,7 +14,7 @@ const UserSchema = new Schema<IUser>({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     phone: {type: String, required: true},
-    role: {type: String, required: true, enum: ['CI', 'MI'] }
+    role: {type: String, required: true, enum: ['CI', 'MI', 'Admin'] }
 
 });
 const User = model<IUser>('User', UserSchema);

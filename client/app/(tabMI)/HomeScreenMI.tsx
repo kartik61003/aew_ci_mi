@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, Button, StyleSheet, ScrollView, Animated, Alert } from "react-native";
+import { Text, StyleSheet, ScrollView, Animated } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { router } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import RequestCard from "../../components/RequestCard";
@@ -12,11 +11,11 @@ export default function HomeScreenMI() {
     const navigation = useNavigation();
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
-    const [requests, setRequests] = useState<{ 
-        _id: string; 
-        user: { _id: string; username: string; email: string; phone: string; }; 
-        Customer_info: { Customer_name: string; Customer_address: string; Customer_phone: string; Customer_email: string; }; 
-        Old_Meter_info: { Meter_id: string; Meter_type: string; Meter_kwh: string; Meter_kvah: string; Meter_status: string; }; 
+    const [requests, setRequests] = useState<{
+        _id: string;
+        user: { _id: string; username: string; email: string; phone: string; };
+        Customer_info: { Customer_name: string; Customer_address: string; Customer_phone: string; Customer_email: string; };
+        Old_Meter_info: { Meter_id: string; Meter_type: string; Meter_kwh: string; Meter_kvah: string; Meter_status: string; };
     }[]>([]);
 
     useEffect(() => {

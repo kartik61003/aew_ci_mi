@@ -24,13 +24,6 @@ export default function RootLayout() {
                             headerShown: true, // Show the header for this screen
                         }}
                     />
-                    <Tabs.Screen
-                        name="RegisterForm"
-                        options={{
-                            title: 'AEW Register Form', // Set the title for the RegisterForm screen
-                            headerShown: true, // Show the header for this screen
-                        }}
-                    />
                 </Tabs>
             </SafeAreaView>
         </SafeAreaProvider>
