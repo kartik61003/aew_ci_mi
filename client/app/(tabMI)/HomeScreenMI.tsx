@@ -1,15 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Text, StyleSheet, ScrollView, Animated } from "react-native";
+import { Text, StyleSheet, ScrollView, Animated, View } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { PieChart } from "react-native-svg-charts";
+
 import RequestCard from "../../components/RequestCard";
 
-export default function HomeScreenMI() {
+const HomeScreenMI: React.FC = () => {
     const auth = useAuth();
     const user = auth?.user;
-    const navigation = useNavigation();
     const fadeAnim = useRef(new Animated.Value(0)).current;
+
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const formattedDate = currentTime.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" });
+
+    // Static Data
+    const allocatedJobs = 30;
+    const completedJobs = 0;
+    const pendingJobs = allocatedJobs - completedJobs;
+  
+    // Chart Data
+    const pieData = [
+      { key: 1, value: pendingJobs, svg: { fill: "red" } },
+      { key: 2, value: completedJobs, svg: { fill: "green" } }
+    ];
 
     const [requests, setRequests] = useState<{
         _id: string;
@@ -17,10 +41,6 @@ export default function HomeScreenMI() {
         Customer_info: { Customer_name: string; Customer_address: string; Customer_phone: string; Customer_email: string; };
         Old_Meter_info: { Meter_id: string; Meter_type: string; Meter_kwh: string; Meter_kvah: string; Meter_status: string; };
     }[]>([]);
-
-    useEffect(() => {
-        navigation.setOptions({ title: "MI" });
-    }, [navigation]);
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -47,22 +67,76 @@ export default function HomeScreenMI() {
     return (
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Text style={styles.welcomeText}>Welcome to Home, {user?.user.username}!</Text>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.dateText}>{`Feb ${formattedDate}`}</Text>
+                        <Text style={styles.timeText}>Today at {formattedTime}</Text>
+                    </View>
 
-                <Text style={styles.sectionTitle}>CI Requests</Text>
-                {requests.map((request) => (
-                    <RequestCard key={request._id} request={request} />
-                ))}
+                    <View style={styles.row}>
+                        <View style={styles.card}>
+                            <Text style={styles.cardTitle}>Allocated</Text>
+                            <Text style={styles.cardValue}>{allocatedJobs}</Text>
+                        </View>
+                        <View style={styles.card}>
+                            <Text style={styles.cardTitle}>Completed</Text>
+                            <Text style={styles.cardValue}>{completedJobs}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.infoCard}>
+                        <Text style={styles.infoTitle}>Today Visit</Text>
+                        <Text style={styles.infoValue}>0</Text>
+                    </View>
+                    <View style={styles.infoCard}>
+                        <Text style={styles.infoTitle}>Total Visit</Text>
+                        <Text style={styles.infoValue}>0</Text>
+                    </View>
+                    <View style={styles.infoCard}>
+                        <Text style={styles.infoTitle}>Pending Visit</Text>
+                        <Text style={styles.infoValue}>{pendingJobs}</Text>
+                    </View>
+
+                    <View style={styles.chartContainer}>
+                        <Text style={styles.chartTitle}>Total Allocated Jobs {allocatedJobs}</Text>
+                        <PieChart style={{ height: 150 }} data={pieData} />
+                        <View style={styles.legend}>
+                            <Text style={{ color: "red" }}>⬤ Total Pending: {pendingJobs}</Text>
+                            <Text style={{ color: "green" }}>⬤ Total Completed: {completedJobs}</Text>
+                        </View>
+                    </View>
+
+                    <Text style={styles.version}>App Version: Beta 2.0.3</Text>
+                </View>
             </ScrollView>
         </Animated.View>
     );
 }
+export default HomeScreenMI;
+
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f5f5f5',
-    },
+
+        container: { flex: 1, backgroundColor: "f5f5f5", padding: 15 },
+        header: { backgroundColor: "red", padding: 15, borderRadius: 10, alignItems: "center" },
+        dateText: { fontSize: 18, fontWeight: "bold", color: "white" },
+        timeText: { fontSize: 14, color: "white" },
+      
+        row: { flexDirection: "row", justifyContent: "space-between", marginVertical: 10 },
+        card: { backgroundColor: "#fff", padding: 15, borderRadius: 10, width: "48%", alignItems: "center", elevation: 5 },
+        cardTitle: { fontSize: 16, color: "black" },
+        cardValue: { fontSize: 20, fontWeight: "bold", color: "black" },
+      
+        infoCard: { backgroundColor: "#fff", padding: 15, borderRadius: 10, marginVertical: 5, elevation: 3 },
+        infoTitle: { fontSize: 16, color: "black" },
+        infoValue: { fontSize: 18, fontWeight: "bold", color: "black", textAlign: "right" },
+      
+        chartContainer: { backgroundColor: "#fff", padding: 15, borderRadius: 10, marginVertical: 10, elevation: 5 },
+        chartTitle: { textAlign: "center", fontSize: 16, fontWeight: "bold", marginBottom: 10 },
+        legend: { flexDirection: "row", justifyContent: "space-between", marginTop: 10 },
+      
+        version: { textAlign: "center", fontSize: 14, color: "gray", marginTop: 20 },
+
     scrollContainer: {
         padding: 12,
         justifyContent: 'center',
