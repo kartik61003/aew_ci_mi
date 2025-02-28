@@ -15,7 +15,13 @@ export default function RootLayout() {
                         headerTitleStyle: {
                             fontWeight: 'bold', // Set header title style
                         },
-                    }}/>
+                    }}>
+                    <Stack.Screen name="LoginForm" options={{
+                        title: 'AEW Login Form',
+                        headerShown: true
+                    }} />
+                    </Stack>
+
             </SafeAreaView>
         </SafeAreaProvider>
     );
