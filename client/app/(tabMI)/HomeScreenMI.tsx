@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Text, StyleSheet, ScrollView, Animated, View } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
-import { PieChart } from "react-native-svg-charts";
+
 
 import RequestCard from "../../components/RequestCard";
 
@@ -21,7 +21,7 @@ const HomeScreenMI: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const formattedDate = currentTime.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" });
 
     // Static Data
@@ -29,11 +29,6 @@ const HomeScreenMI: React.FC = () => {
     const completedJobs = 0;
     const pendingJobs = allocatedJobs - completedJobs;
   
-    // Chart Data
-    const pieData = [
-      { key: 1, value: pendingJobs, svg: { fill: "red" } },
-      { key: 2, value: completedJobs, svg: { fill: "green" } }
-    ];
 
     const [requests, setRequests] = useState<{
         _id: string;
@@ -69,7 +64,7 @@ const HomeScreenMI: React.FC = () => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Text style={styles.dateText}>{`Feb ${formattedDate}`}</Text>
+                        <Text style={styles.dateText}>{`${formattedDate}`}</Text>
                         <Text style={styles.timeText}>Today at {formattedTime}</Text>
                     </View>
 
@@ -99,10 +94,9 @@ const HomeScreenMI: React.FC = () => {
 
                     <View style={styles.chartContainer}>
                         <Text style={styles.chartTitle}>Total Allocated Jobs {allocatedJobs}</Text>
-                        <PieChart style={{ height: 150 }} data={pieData} />
                         <View style={styles.legend}>
-                            <Text style={{ color: "red" }}>⬤ Total Pending: {pendingJobs}</Text>
-                            <Text style={{ color: "green" }}>⬤ Total Completed: {completedJobs}</Text>
+                            <Text style={{ color: "red", fontSize:11 }}>⬤ Total Pending: {pendingJobs}</Text>
+                            <Text style={{ color: "green", fontSize:11 }}>⬤ Total Completed: {completedJobs}</Text>
                         </View>
                     </View>
 
