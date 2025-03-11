@@ -8,7 +8,8 @@ import { FontAwesome } from '@expo/vector-icons';
 
 // Import Screens
 import HomeScreenMI from '../(tabMI)/HomeScreenMI';
-import Details from '../(tabMI)/Details';
+import Details from './details';
+import MeterInstallScreen from './MeterInstallScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -69,7 +70,7 @@ export default function RootLayout() {
             />
             <Drawer.Screen
                 name="MeterInstallScreen"
-                component={Details}
+                component={MeterInstallScreen}
                 options={{
                     title: 'Meter Installation',
                     drawerIcon: ({ color }) => <FontAwesome size={24} name="gears" color={color} />,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Text, StyleSheet, ScrollView, Animated, View } from "react-native";
+import { Text, StyleSheet, ScrollView, Animated, View, TouchableOpacity } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
 
@@ -62,6 +62,7 @@ const HomeScreenMI: React.FC = () => {
     return (
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <Text style= {styles.welcomeText}>Welcome {user?.user.username}</Text>
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Text style={styles.dateText}>{`${formattedDate}`}</Text>
@@ -70,8 +71,10 @@ const HomeScreenMI: React.FC = () => {
 
                     <View style={styles.row}>
                         <View style={styles.card}>
+                            <TouchableOpacity onPress={() => console.log("Allocated")}>
                             <Text style={styles.cardTitle}>Allocated</Text>
                             <Text style={styles.cardValue}>{allocatedJobs}</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.card}>
                             <Text style={styles.cardTitle}>Completed</Text>
@@ -99,8 +102,6 @@ const HomeScreenMI: React.FC = () => {
                             <Text style={{ color: "green", fontSize:11 }}>⬤ Total Completed: {completedJobs}</Text>
                         </View>
                     </View>
-
-                    <Text style={styles.version}>App Version: Beta 2.0.3</Text>
                 </View>
             </ScrollView>
         </Animated.View>
@@ -125,20 +126,19 @@ const styles = StyleSheet.create({
         infoTitle: { fontSize: 16, color: "black" },
         infoValue: { fontSize: 18, fontWeight: "bold", color: "black", textAlign: "right" },
       
-        chartContainer: { backgroundColor: "#fff", padding: 15, borderRadius: 10, marginVertical: 10, elevation: 5 },
+        chartContainer: { backgroundColor: "#fff", padding: 10, borderRadius: 10, marginVertical: 9, elevation: 5 },
         chartTitle: { textAlign: "center", fontSize: 16, fontWeight: "bold", marginBottom: 10 },
         legend: { flexDirection: "row", justifyContent: "space-between", marginTop: 10 },
       
         version: { textAlign: "center", fontSize: 14, color: "gray", marginTop: 20 },
 
     scrollContainer: {
-        padding: 12,
+        padding: 10,
         justifyContent: 'center',
     },
     welcomeText: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
         color: '#333',
         textAlign: 'center',
         fontFamily: 'Arial',

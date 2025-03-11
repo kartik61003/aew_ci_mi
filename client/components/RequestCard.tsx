@@ -50,6 +50,15 @@ const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
                     <Text style={styles.label}>Old Meter kWh: {request.Old_Meter_info.Meter_kwh}</Text>
                     <Text style={styles.label}>Old Meter kVah: {request.Old_Meter_info.Meter_kvah}</Text>
                     <Text style={styles.label}>Old Meter Status: {request.Old_Meter_info.Meter_status}</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
+                            <Text style={styles.buttonText}>Mark as Done</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
+                            <Text style={styles.buttonText}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )}
         </View>
@@ -76,6 +85,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: '#333',
     },
     content: {
         marginTop: 10,
@@ -83,6 +93,25 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 5,
+        color: '#555',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    button: {
+        flex: 1,
+        backgroundColor: 'orange',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginHorizontal: 5,
+    },
+    buttonText: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: 'bold',
     },
 });
 
