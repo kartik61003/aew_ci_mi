@@ -3,9 +3,6 @@ import { Text, StyleSheet, ScrollView, Animated, View, TouchableOpacity } from "
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
 
-
-import RequestCard from "../../components/RequestCard";
-
 const HomeScreenMI: React.FC = () => {
     const auth = useAuth();
     const user = auth?.user;
