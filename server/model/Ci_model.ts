@@ -20,6 +20,7 @@ interface Ici extends Document {
         Meter_kvah: string;
         Meter_status: string;
     }
+    request_status: "pending" | "completed";
 }
 
 const CiSchema = new Schema<Ici>({
@@ -40,7 +41,8 @@ const CiSchema = new Schema<Ici>({
         Meter_kwh: { type: String, required: true },
         Meter_kvah: { type: String, required: true },
         Meter_status: { type: String, required: true }
-    }
+    },
+    request_status: { type: String, required: true }
 });
 
 const Ci = model<Ici>('Ci', CiSchema);

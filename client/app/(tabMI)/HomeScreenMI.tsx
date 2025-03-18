@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Text, StyleSheet, ScrollView, Animated, View, TouchableOpacity } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
+import { router } from "expo-router";
 
 const HomeScreenMI: React.FC = () => {
     const auth = useAuth();
@@ -19,12 +20,7 @@ const HomeScreenMI: React.FC = () => {
   }, []);
 
   const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const formattedDate = currentTime.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" });
-
-    // Static Data
-    const allocatedJobs = 30;
-    const completedJobs = 0;
-    const pendingJobs = allocatedJobs - completedJobs;
+  const formattedDate = currentTime.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" }); 
   
 
     const [requests, setRequests] = useState<{
@@ -32,6 +28,7 @@ const HomeScreenMI: React.FC = () => {
         user: { _id: string; username: string; email: string; phone: string; };
         Customer_info: { Customer_name: string; Customer_address: string; Customer_phone: string; Customer_email: string; };
         Old_Meter_info: { Meter_id: string; Meter_type: string; Meter_kwh: string; Meter_kvah: string; Meter_status: string; };
+        request_status: "pending" | "completed";
     }[]>([]);
 
     useEffect(() => {
@@ -56,6 +53,13 @@ const HomeScreenMI: React.FC = () => {
     }, []);
 
 
+    const allocatedJobs = requests.length;
+    const completedJobs = requests.filter((request) => request.request_status === 'completed').length;
+    const pendingJobs = requests.filter((request) => request.request_status === 'pending').length;
+    const TodayVisitCount = requests.filter((request) => request.request_status === 'completed').length;
+    const TotalVisitCount = requests.length;
+
+
     return (
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -68,24 +72,26 @@ const HomeScreenMI: React.FC = () => {
 
                     <View style={styles.row}>
                         <View style={styles.card}>
-                            <TouchableOpacity onPress={() => console.log("Allocated")}>
+                            <TouchableOpacity onPress={() => router.replace('/MeterInstallScreen')}>
                             <Text style={styles.cardTitle}>Allocated</Text>
                             <Text style={styles.cardValue}>{allocatedJobs}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.card}>
+                        <TouchableOpacity onPress={() => router.replace('/MeterInstallScreen')}>
                             <Text style={styles.cardTitle}>Completed</Text>
                             <Text style={styles.cardValue}>{completedJobs}</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
                     <View style={styles.infoCard}>
                         <Text style={styles.infoTitle}>Today Visit</Text>
-                        <Text style={styles.infoValue}>0</Text>
+                        <Text style={styles.infoValue}>{TodayVisitCount}</Text>
                     </View>
                     <View style={styles.infoCard}>
                         <Text style={styles.infoTitle}>Total Visit</Text>
-                        <Text style={styles.infoValue}>0</Text>
+                        <Text style={styles.infoValue}>{TotalVisitCount}</Text>
                     </View>
                     <View style={styles.infoCard}>
                         <Text style={styles.infoTitle}>Pending Visit</Text>

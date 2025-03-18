@@ -22,6 +22,7 @@ interface cirequest extends Request {
             Meter_kvah: string;
             Meter_status: string;
         };
+        request_status: "pending" | "completed";
     };
   };
   
@@ -32,7 +33,8 @@ export const cirequestcontroller = async (req: cirequest, res: Response): Promis
         const newCi = new Ci({
             user,
             Customer_info,
-            Old_Meter_info
+            Old_Meter_info,
+            request_status: 'pending'
         });
         await newCi.save();
         res.status(201).json({ message: 'CI request created successfully' });

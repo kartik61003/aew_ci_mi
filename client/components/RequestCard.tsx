@@ -24,8 +24,10 @@ interface RequestCardProps {
             Meter_kvah: string;
             Meter_status: string;
         };
+        request_status: 'pending' | 'completed';
     };
 }
+
 
 const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
     const [expanded, setExpanded] = useState(false);
@@ -33,9 +35,10 @@ const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
     const toggleExpand = () => {
         setExpanded(!expanded);
     };
+    const cardBackgroundColor = request.request_status === 'pending' ? 'maroon' : 'darkgreen';
 
     return (
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: cardBackgroundColor }]}>
             <TouchableOpacity onPress={toggleExpand} style={styles.header}>
                 <Text style={styles.headerText}>{request.Customer_info.Customer_name}</Text>
                 <FontAwesome name={expanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
@@ -50,6 +53,7 @@ const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
                     <Text style={styles.label}>Old Meter kWh: {request.Old_Meter_info.Meter_kwh}</Text>
                     <Text style={styles.label}>Old Meter kVah: {request.Old_Meter_info.Meter_kvah}</Text>
                     <Text style={styles.label}>Old Meter Status: {request.Old_Meter_info.Meter_status}</Text>
+                    <Text style={styles.label}>Request Status: {request.request_status}</Text>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
                             <Text style={styles.buttonText}>Mark as Done</Text>
@@ -67,7 +71,6 @@ const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#fff',
         borderRadius: 8,
         padding: 16,
         marginBottom: 10,
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#333',
+        color: 'white',
     },
     content: {
         marginTop: 10,
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 5,
-        color: '#555',
+        color:'white'
     },
     buttonContainer: {
         flexDirection: 'row',

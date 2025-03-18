@@ -20,6 +20,7 @@ export interface ciData {
         Meter_kvah: string;
         Meter_status: string;
     };
+    request_status: "pending" | "completed";
 }
 
 export const createCi = async (data: ciData) => {
