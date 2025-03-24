@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ActivityIndicator, Text, Image } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAuth } from "../../hooks/useAuth";
 import { FontAwesome } from '@expo/vector-icons';
 

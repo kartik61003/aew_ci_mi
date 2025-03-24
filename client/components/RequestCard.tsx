@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import axios from 'axios';
 import { markdone } from '@/service/ci';
-import { router } from 'expo-router';
+
 
 interface RequestCardProps {
     request: {
@@ -75,45 +74,76 @@ const RequestCard: React.FC<RequestCardProps> = ({ request, refreshRequests }) =
             {expanded && (
                 <View style={styles.content}>
                     <Text style={styles.label}>Customer Name:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={customerInfo.Customer_name} 
-                        onChangeText={(value) => handleInputChange('Customer_name', value, 'customer')} 
-                        editable={isEditable} 
+                    <TextInput
+                        style={styles.input}
+                        value={customerInfo.Customer_name}
+                        onChangeText={(value) => handleInputChange('Customer_name', value, 'customer')}
+                        editable={isEditable}
                     />
 
                     <Text style={styles.label}>Customer Address:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={customerInfo.Customer_address} 
-                        onChangeText={(value) => handleInputChange('Customer_address', value, 'customer')} 
-                        editable={isEditable} 
+                    <TextInput
+                        style={styles.input}
+                        value={customerInfo.Customer_address}
+                        onChangeText={(value) => handleInputChange('Customer_address', value, 'customer')}
+                        editable={isEditable}
                     />
 
                     <Text style={styles.label}>Customer Phone:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={customerInfo.Customer_phone} 
-                        onChangeText={(value) => handleInputChange('Customer_phone', value, 'customer')} 
-                        editable={isEditable} 
+                    <TextInput
+                        style={styles.input}
+                        value={customerInfo.Customer_phone}
+                        onChangeText={(value) => handleInputChange('Customer_phone', value, 'customer')}
+                        editable={isEditable}
                         keyboardType="phone-pad"
                     />
 
+                    <Text style={styles.label}>Customer Email:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={customerInfo.Customer_email}
+                        onChangeText={(value) => handleInputChange('Customer_email', value, 'customer')}
+                        editable={isEditable}
+                        keyboardType="email-address"
+                    />
+
                     <Text style={styles.label}>Old Meter ID:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={oldMeterInfo.Meter_id} 
-                        onChangeText={(value) => handleInputChange('Meter_id', value, 'meter')} 
-                        editable={isEditable} 
+                    <TextInput
+                        style={styles.input}
+                        value={oldMeterInfo.Meter_id}
+                        onChangeText={(value) => handleInputChange('Meter_id', value, 'meter')}
+                        editable={isEditable}
                     />
 
                     <Text style={styles.label}>Old Meter Type:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={oldMeterInfo.Meter_type} 
-                        onChangeText={(value) => handleInputChange('Meter_type', value, 'meter')} 
-                        editable={isEditable} 
+                    <TextInput
+                        style={styles.input}
+                        value={oldMeterInfo.Meter_type}
+                        onChangeText={(value) => handleInputChange('Meter_type', value, 'meter')}
+                        editable={isEditable}
                     />
+                    <Text style={styles.label}>Old Meter KWH:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={oldMeterInfo.Meter_kwh}
+                        onChangeText={(value) => handleInputChange('Meter_kwh', value, 'meter')}
+                        editable={isEditable}
+                    />
+                    <Text style={styles.label}>Old Meter KVA:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={oldMeterInfo.Meter_kvah}
+                        onChangeText={(value) => handleInputChange('Meter_kvah', value, 'meter')}
+                        editable={isEditable}
+                    />
+                    <Text style={styles.label}>Old Meter KVAR:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={oldMeterInfo.Meter_kvah}
+                        onChangeText={(value) => handleInputChange('Meter_kvah', value, 'meter')}
+                        editable={isEditable}
+                    />
+
 
                     <Text style={styles.label}>Request Status: {request.request_status}</Text>
 
