@@ -23,6 +23,10 @@ export interface ciData {
     request_status: "pending" | "completed";
 }
 
+export interface request_Id {
+    requestId: string;
+}
+
 export const createCi = async (data: ciData) => {
     try {
         const response = await axios.post('http://192.168.1.69:5000/ci', data);
@@ -31,3 +35,14 @@ export const createCi = async (data: ciData) => {
         throw error;
     }
 };
+
+
+export const markdone = async (data: request_Id) => {
+    try {
+        const response = await axios.post('http://192.168.1.69:5000/markdone', data); 
+        response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}

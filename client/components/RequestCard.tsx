@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import axios from 'axios';
+import { markdone } from '@/service/ci';
+import { router } from 'expo-router';
 
 interface RequestCardProps {
     request: {
@@ -26,15 +29,25 @@ interface RequestCardProps {
         };
         request_status: 'pending' | 'completed';
     };
+    refreshRequests: () => void; // Receive refresh function
 }
 
-
-const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
+const RequestCard: React.FC<RequestCardProps> = ({ request, refreshRequests }) => {
     const [expanded, setExpanded] = useState(false);
 
     const toggleExpand = () => {
         setExpanded(!expanded);
     };
+
+    const handleMarkDone = async () => {
+        try {
+            await markdone({ requestId: request._id }); // Call API to update status
+            refreshRequests(); // Refresh data after updating
+        } catch (error) {
+            console.error("Error marking request as done:", error);
+        }
+    };
+
     const cardBackgroundColor = request.request_status === 'pending' ? 'maroon' : 'darkgreen';
 
     return (
@@ -55,7 +68,7 @@ const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
                     <Text style={styles.label}>Old Meter Status: {request.Old_Meter_info.Meter_status}</Text>
                     <Text style={styles.label}>Request Status: {request.request_status}</Text>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
+                        <TouchableOpacity style={styles.button}onPress={handleMarkDone}>      
                             <Text style={styles.buttonText}>Mark as Done</Text>
                         </TouchableOpacity>
 

@@ -1,79 +1,118 @@
-import React, { useState, useEffect, useRef } from "react";
-import {Text, StyleSheet, ScrollView, Animated} from "react-native";
-import { useAuth } from "../../hooks/useAuth";
-import axios from "axios";
-import RequestCard from "../../components/RequestCard";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
-export default function HomeScreenMI() {
-    const auth = useAuth();
-    const user = auth?.user;
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-
-    const [requests, setRequests] = useState<{ 
-        _id: string; 
-        user: { _id: string; username: string; email: string; phone: string; }; 
-        Customer_info: { Customer_name: string; Customer_address: string; Customer_phone: string; Customer_email: string; }; 
-        Old_Meter_info: { Meter_id: string; Meter_type: string; Meter_kwh: string; Meter_kvah: string; Meter_status: string; }; 
-    }[]>([]);
-
-    useEffect(() => {
-        Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-        }).start();
-    }, [fadeAnim]);
-
-    useEffect(() => {
-        const fetchRequests = async () => {
-            try {
-                const response = await axios.get('http://192.168.1.69:5000/getmi');
-                setRequests(response.data);
-            } catch (error) {
-                console.error('Error fetching requests:', error);
-            }
+interface RequestCardProps {
+    request: {
+        _id: string;
+        user: {
+            _id: string;
+            username: string;
+            email: string;
+            phone: string;
         };
-
-        fetchRequests();
-    }, []);
-
-
-    return (
-        <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Text style={styles.welcomeText}>Welcome to Home, {user?.user.username}!</Text>
-
-                <Text style={styles.sectionTitle}>Verify CI Requests</Text>
-                {requests.map((request) => (
-                    <RequestCard key={request._id} request={request} />
-                ))}
-            </ScrollView>
-        </Animated.View>
-    );
+        Customer_info: {
+            Customer_name: string;
+            Customer_address: string;
+            Customer_phone: string;
+            Customer_email: string;
+        };
+        Old_Meter_info: {
+            Meter_id: string;
+            Meter_type: string;
+            Meter_kwh: string;
+            Meter_kvah: string;
+            Meter_status: string;
+        };
+    };
 }
 
+const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    const toggleExpand = () => {
+        setExpanded(!expanded);
+    };
+
+    return (
+        <View style={styles.card}>
+            <TouchableOpacity onPress={toggleExpand} style={styles.header}>
+                <Text style={styles.headerText}>{request.Customer_info.Customer_name}</Text>
+                <FontAwesome name={expanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
+            </TouchableOpacity>
+            {expanded && (
+                <View style={styles.content}>
+                    <Text style={styles.label}>Customer Address: {request.Customer_info.Customer_address}</Text>
+                    <Text style={styles.label}>Customer Phone: {request.Customer_info.Customer_phone}</Text>
+                    <Text style={styles.label}>Customer Email: {request.Customer_info.Customer_email}</Text>
+                    <Text style={styles.label}>Old Meter ID: {request.Old_Meter_info.Meter_id}</Text>
+                    <Text style={styles.label}>Old Meter Type: {request.Old_Meter_info.Meter_type}</Text>
+                    <Text style={styles.label}>Old Meter kWh: {request.Old_Meter_info.Meter_kwh}</Text>
+                    <Text style={styles.label}>Old Meter kVah: {request.Old_Meter_info.Meter_kvah}</Text>
+                    <Text style={styles.label}>Old Meter Status: {request.Old_Meter_info.Meter_status}</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
+                            <Text style={styles.buttonText}>Mark as Done</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
+                            <Text style={styles.buttonText}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )}
+        </View>
+    );
+};
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f5f5f5',
-    },
-    scrollContainer: {
-        padding: 12,
-        justifyContent: 'center',
-    },
-    welcomeText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#333',
-        textAlign: 'center',
-        fontFamily: 'Arial',
-    },
-    sectionTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        padding: 16,
         marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 2,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    headerText: {
+        fontSize: 18,
+        fontWeight: 'bold',
         color: '#333',
-        fontFamily: 'Arial',
+    },
+    content: {
+        marginTop: 10,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 5,
+        color: '#555',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    button: {
+        flex: 1,
+        backgroundColor: 'orange',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginHorizontal: 5,
+    },
+    buttonText: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: 'bold',
     },
 });
+
+export default RequestCard;

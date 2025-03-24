@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Text, StyleSheet, ScrollView, Animated, View, TouchableOpacity } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
 const HomeScreenMI: React.FC = () => {
     const auth = useAuth();
@@ -20,7 +20,10 @@ const HomeScreenMI: React.FC = () => {
   }, []);
 
   const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const formattedDate = currentTime.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" }); 
+  const formattedDate = currentTime.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" });
+
+    // Static Data
+  
   
 
     const [requests, setRequests] = useState<{
@@ -39,25 +42,32 @@ const HomeScreenMI: React.FC = () => {
         }).start();
     }, [fadeAnim]);
 
-    useEffect(() => {
-        const fetchRequests = async () => {
-            try {
-                const response = await axios.get('http://192.168.1.69:5000/getmi');
-                setRequests(response.data);
-            } catch (error) {
-                console.error('Error fetching requests:', error);
-            }
-        };
 
-        fetchRequests();
-    }, []);
-
+const fetchRequests = async () => {
+        try {
+            const response = await axios.get('http://192.168.1.69:5000/getmi');
+            setRequests(response.data);
+        } catch (error) {
+            console.error('Error fetching requests:', error);
+        }
+};
 
     const allocatedJobs = requests.length;
     const completedJobs = requests.filter((request) => request.request_status === 'completed').length;
     const pendingJobs = requests.filter((request) => request.request_status === 'pending').length;
     const TodayVisitCount = requests.filter((request) => request.request_status === 'completed').length;
     const TotalVisitCount = requests.length;
+
+    useEffect(() => {
+        fetchRequests();
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchRequests();
+        }, [])
+    );
+    
 
 
     return (

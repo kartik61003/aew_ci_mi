@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {Text, StyleSheet, ScrollView, Animated } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import RequestCard from "../../components/RequestCard";
 
 export default function MeterInstallScreen() {
+
     const auth = useAuth();
     const user = auth?.user;
     const navigation = useNavigation();
@@ -18,6 +19,7 @@ export default function MeterInstallScreen() {
         Old_Meter_info: { Meter_id: string; Meter_type: string; Meter_kwh: string; Meter_kvah: string; Meter_status: string; };
         request_status: "pending" | "completed"; 
     }[]>([]);
+ 
 
     useEffect(() => {
         navigation.setOptions({ title: "MI" });
@@ -31,18 +33,24 @@ export default function MeterInstallScreen() {
         }).start();
     }, [fadeAnim]);
 
+    const fetchRequests = async () => {
+        try {
+            const response = await axios.get('http://192.168.1.69:5000/getmi');
+            setRequests(response.data);
+        } catch (error) {
+            console.error('Error fetching requests:', error);
+        }
+    };
+    
     useEffect(() => {
-        const fetchRequests = async () => {
-            try {
-                const response = await axios.get('http://192.168.1.69:5000/getmi');
-                setRequests(response.data);
-            } catch (error) {
-                console.error('Error fetching requests:', error);
-            }
-        };
-
         fetchRequests();
     }, []);
+    
+     useFocusEffect(
+            useCallback(() => {
+                fetchRequests();
+            }, [])
+    );
 
 
     return (
@@ -52,7 +60,7 @@ export default function MeterInstallScreen() {
 
                 <Text style={styles.sectionTitle}>MI Requests</Text>
                 {requests.map((request) => (
-                    <RequestCard key={request._id} request={request} />
+                     <RequestCard key={request._id} request={request} refreshRequests={fetchRequests} />
                 ))}
             </ScrollView>
         </Animated.View>
