@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import { markdone } from '@/service/ci';
@@ -34,14 +34,30 @@ interface RequestCardProps {
 
 const RequestCard: React.FC<RequestCardProps> = ({ request, refreshRequests }) => {
     const [expanded, setExpanded] = useState(false);
+    const [customerInfo, setCustomerInfo] = useState(request.Customer_info);
+    const [oldMeterInfo, setOldMeterInfo] = useState(request.Old_Meter_info);
+    const isEditable = request.request_status === 'pending';
 
+    const handleInputChange = (field: string, value: string, type: 'customer' | 'meter') => {
+        if (type === 'customer') {
+            setCustomerInfo({ ...customerInfo, [field]: value });
+        } else {
+            setOldMeterInfo({ ...oldMeterInfo, [field]: value });
+        }
+    };
     const toggleExpand = () => {
         setExpanded(!expanded);
     };
 
     const handleMarkDone = async () => {
         try {
-            await markdone({ requestId: request._id }); // Call API to update status
+            const updatedRequest = {
+                ...request,
+                Customer_info: customerInfo,
+                Old_Meter_info: oldMeterInfo,
+                request_status: 'completed',
+            }
+            await markdone(updatedRequest); // Call API to update status
             refreshRequests(); // Refresh data after updating
         } catch (error) {
             console.error("Error marking request as done:", error);
@@ -58,24 +74,56 @@ const RequestCard: React.FC<RequestCardProps> = ({ request, refreshRequests }) =
             </TouchableOpacity>
             {expanded && (
                 <View style={styles.content}>
-                    <Text style={styles.label}>Customer Address: {request.Customer_info.Customer_address}</Text>
-                    <Text style={styles.label}>Customer Phone: {request.Customer_info.Customer_phone}</Text>
-                    <Text style={styles.label}>Customer Email: {request.Customer_info.Customer_email}</Text>
-                    <Text style={styles.label}>Old Meter ID: {request.Old_Meter_info.Meter_id}</Text>
-                    <Text style={styles.label}>Old Meter Type: {request.Old_Meter_info.Meter_type}</Text>
-                    <Text style={styles.label}>Old Meter kWh: {request.Old_Meter_info.Meter_kwh}</Text>
-                    <Text style={styles.label}>Old Meter kVah: {request.Old_Meter_info.Meter_kvah}</Text>
-                    <Text style={styles.label}>Old Meter Status: {request.Old_Meter_info.Meter_status}</Text>
-                    <Text style={styles.label}>Request Status: {request.request_status}</Text>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button}onPress={handleMarkDone}>      
-                            <Text style={styles.buttonText}>Mark as Done</Text>
-                        </TouchableOpacity>
+                    <Text style={styles.label}>Customer Name:</Text>
+                    <TextInput 
+                        style={styles.input} 
+                        value={customerInfo.Customer_name} 
+                        onChangeText={(value) => handleInputChange('Customer_name', value, 'customer')} 
+                        editable={isEditable} 
+                    />
 
-                        <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
-                            <Text style={styles.buttonText}>Edit</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Text style={styles.label}>Customer Address:</Text>
+                    <TextInput 
+                        style={styles.input} 
+                        value={customerInfo.Customer_address} 
+                        onChangeText={(value) => handleInputChange('Customer_address', value, 'customer')} 
+                        editable={isEditable} 
+                    />
+
+                    <Text style={styles.label}>Customer Phone:</Text>
+                    <TextInput 
+                        style={styles.input} 
+                        value={customerInfo.Customer_phone} 
+                        onChangeText={(value) => handleInputChange('Customer_phone', value, 'customer')} 
+                        editable={isEditable} 
+                        keyboardType="phone-pad"
+                    />
+
+                    <Text style={styles.label}>Old Meter ID:</Text>
+                    <TextInput 
+                        style={styles.input} 
+                        value={oldMeterInfo.Meter_id} 
+                        onChangeText={(value) => handleInputChange('Meter_id', value, 'meter')} 
+                        editable={isEditable} 
+                    />
+
+                    <Text style={styles.label}>Old Meter Type:</Text>
+                    <TextInput 
+                        style={styles.input} 
+                        value={oldMeterInfo.Meter_type} 
+                        onChangeText={(value) => handleInputChange('Meter_type', value, 'meter')} 
+                        editable={isEditable} 
+                    />
+
+                    <Text style={styles.label}>Request Status: {request.request_status}</Text>
+
+                    {isEditable && (
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.button} onPress={handleMarkDone}>
+                                <Text style={styles.buttonText}>Mark as Done</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 </View>
             )}
         </View>
@@ -109,7 +157,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 5,
-        color:'white'
+        color: 'white'
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -129,6 +177,13 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
     },
+    input: {
+        height: 40,
+        marginBottom: 10,
+        paddingHorizontal: 5,
+        borderRadius: 8,
+        backgroundColor: '#fff',
+    }
 });
 
 export default RequestCard;

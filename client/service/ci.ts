@@ -37,7 +37,7 @@ export const createCi = async (data: ciData) => {
 };
 
 
-export const markdone = async (data: request_Id) => {
+export const markdone = async (data: ciData) => {
     try {
         const response = await axios.post('http://192.168.1.69:5000/markdone', data); 
         response.data;
