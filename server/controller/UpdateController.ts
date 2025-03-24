@@ -3,7 +3,8 @@ import Ci from '../model/Ci_model';
 
 export const markdonecontroller = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { requestId } = req.body; // Ensure correct extraction of requestId
+        // Ensure correct extraction of requestId
+        const requestId = req.body._id;
 
         if (!requestId) {
              res.status(400).json({ message: "requestId is required" });
@@ -11,7 +12,7 @@ export const markdonecontroller = async (req: Request, res: Response): Promise<v
 
         const updatedCi = await Ci.findByIdAndUpdate(
             requestId, 
-            { $set: { request_status: "completed" } }, 
+            { ...req.body }, 
             { new: true } // Ensures we get the updated document
         );
 
