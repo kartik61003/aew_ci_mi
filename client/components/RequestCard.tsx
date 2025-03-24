@@ -27,7 +27,7 @@ interface RequestCardProps {
             Meter_kvah: string;
             Meter_status: string;
         };
-        request_status: 'pending' | 'completed';
+        request_status: string;
     };
     refreshRequests: () => void; // Receive refresh function
 }

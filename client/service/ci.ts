@@ -20,7 +20,7 @@ export interface ciData {
         Meter_kvah: string;
         Meter_status: string;
     };
-    request_status: "pending" | "completed";
+    request_status: string;
 }
 
 export interface request_Id {

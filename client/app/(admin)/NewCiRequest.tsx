@@ -65,7 +65,8 @@ export default function CreateCiRequest() {
                     Meter_kwh: oldMeterKwh,
                     Meter_kvah: oldMeterKvah,
                     Meter_status: oldMeterStatus,
-                }
+                },
+                request_status: 'pending'
             };
 
             console.log('Submitting Form:', data);
